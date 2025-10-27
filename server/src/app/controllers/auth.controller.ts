@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../middlewares/asyncHandler.middleware";
 import { loginSchema, registerSchema } from "../validators/auth.validator";
-import { loginService, registerService } from "../services/register.service";
+import { loginService, registerService } from "../services/auth.service";
 import { clearJwtAuthCookie, setJwtAuthCookie } from "../utils/cookie";
 import { HTTPSTATUS } from "../config/http.config";
 
@@ -36,4 +36,12 @@ export const logoutController = asyncHandler(async (req: Request, res: Response)
             .json({
                   message: "User logout successfully",
             });
+});
+
+export const authStatusController = asyncHandler(async (req: Request, res: Response) => {
+      const user = req.user;
+      res.status(HTTPSTATUS.OK).json({
+            message: "Authenticated User",
+            user
+      })
 });
