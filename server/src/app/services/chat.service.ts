@@ -48,7 +48,7 @@ export const createChatService = async (userId: string, payload: {
 
 export const getUserChatsService = async (userId: string) => {
       const chats = await ChatModel.find({
-            participants: { $in: ["userId"] }
+            participants: { $in: [userId] }
       }).populate("participants", "name avatar")
             .populate({
                   path: "lastMessage",
