@@ -4,7 +4,7 @@ import cors from "cors";
 import passport from "passport";
 import { envVars } from "./app/config/env.config";
 import { errorHandler } from "./app/middlewares/errorHandler.middleware";
-import { router } from "./app/routes";
+import routes from "./app/routes";
 import "./app/config/passport.config";
 
 const app: Application = express();
@@ -19,7 +19,7 @@ app.use(cors({
 app.use(passport.initialize());
 
 // Routes
-app.use("/api", router);
+app.use("/api", routes);
 
 
 // Main Route

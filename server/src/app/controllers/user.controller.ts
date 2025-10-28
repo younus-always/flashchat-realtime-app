@@ -5,10 +5,11 @@ import { getUsersService } from "../services/user.service";
 
 export const getUsersController = asyncHandler(async (req: Request, res: Response) => {
       const userId = req.user?._id as string;
-      const users = await getUsersService(userId);
+      const result = await getUsersService(userId);
 
       res.status(HTTPSTATUS.OK).json({
             message: "Users retrieved successfully",
-            users
+            total: result.totalUser,
+            users: result.users
       })
 });

@@ -2,7 +2,7 @@ import passport from "passport";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import { UnAuthorizedException } from "../utils/app-error";
 import { envVars } from "./env.config";
-import { findByUserService } from "../services/user.service";
+import { findByIdUserService } from "../services/user.service";
 
 passport.use(
       new JwtStrategy(
@@ -18,9 +18,9 @@ passport.use(
                   audience: ["user"],
                   algorithms: ["HS256"]
             },
-            async (userId, done) => {
+            async ({ userId }, done) => {
                   try {
-                        const user = userId && await findByUserService(userId);
+                        const user = userId && (await findByIdUserService(userId));
                         return done(null, user || false);
                   } catch (error) {
                         return done(error)

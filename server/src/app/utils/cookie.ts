@@ -13,7 +13,7 @@ export const setJwtAuthCookie = ({ res, userId }: Cookie) => {
       const payload = { userId };
       const expiresIn = envVars.JWT_EXPIRERS as Time;
       const token = jwt.sign(payload, envVars.JWT_SECRET_TOKEN, {
-            audience: ["User"],
+            audience: ["user"],
             expiresIn
       } as SignOptions);
 

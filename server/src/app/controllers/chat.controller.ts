@@ -9,7 +9,7 @@ export const createChatController = asyncHandler(async (req: Request, res: Respo
       const body = createChatSchema.parse(req.body);
       const chat = await createChatService(userId, body);
 
-      res.status(HTTPSTATUS.OK).json({
+      res.status(HTTPSTATUS.CREATED).json({
             message: "Chat created successfully",
             chat
       })

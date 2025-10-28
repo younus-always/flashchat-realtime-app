@@ -40,7 +40,7 @@ export const createChatService = async (userId: string, payload: {
                   isGroup: false,
                   createdBy: userId
             })
-      }
+      };
 
       // implement websocket
       return chat;
@@ -64,8 +64,11 @@ export const getUserChatsService = async (userId: string) => {
 export const getSingleChatService = async (chatId: string, userId: string) => {
       const chat = await ChatModel.findOne({
             _id: chatId,
-            participants: { $in: [userId] }
+            participants: {
+                  $in: [userId]
+            }
       });
+
       if (!chat) throw new BadRequestException("Chat not found or you are not authorized to view this chat.");
 
       const messages = await MessageModel.find({ chatId })

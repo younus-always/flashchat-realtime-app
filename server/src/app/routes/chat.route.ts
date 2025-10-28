@@ -3,7 +3,7 @@ import { createChatController, getSingleChatController, getUserChatsController }
 import { passportAuthenticateJwt } from "../config/passport.config";
 
 const chatRoutes = Router()
-      // .use(passportAuthenticateJwt)
+      .use(passportAuthenticateJwt)
       .post("/create", createChatController)
       .get("/all", getUserChatsController)
       .get("/:id", getSingleChatController)
