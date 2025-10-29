@@ -1,3 +1,4 @@
+import cloudinary from "../config/cloudinary.config";
 import { ChatModel } from "../models/chat.model";
 import { MessageModel } from "../models/message.model";
 import { BadRequestException, NotFoundException } from "../utils/app-error";
@@ -20,32 +21,35 @@ export const sendMessageService = async (userId: string, payload: {
                   chatId
             });
             if (!replyMessage) throw new NotFoundException("Reply message not found");
+      };
 
-            let imageUrl;
-            if (!image) {
-                  // upload the image to cloudinary  
-            };
+      let imageUrl;
+      if (image) {
+            // upload the image to cloudinary  
+            const uploadRes = await cloudinary.uploader.upload(image);
+            console.log(uploadRes);
+            imageUrl = uploadRes.secure_url;
+      };
 
-            const newMessage = await MessageModel.create({
-                  chatId,
-                  sender: userId,
-                  content,
-                  image: imageUrl,
-                  replyTo: replyToId || null
-            });
-            await newMessage.populate([
-                  { path: "sender", select: "name avatar" },
-                  {
-                        path: "replyTo",
-                        select: "content image sender",
-                        populate: {
-                              path: "sender",
-                              select: "name avatar"
-                        }
+      const newMessage = await MessageModel.create({
+            chatId,
+            sender: userId,
+            content,
+            image: imageUrl,
+            replyTo: replyToId || null
+      });
+      await newMessage.populate([
+            { path: "sender", select: "name avatar" },
+            {
+                  path: "replyTo",
+                  select: "content image sender",
+                  populate: {
+                        path: "sender",
+                        select: "name avatar"
                   }
-            ]);
-            // websocket
+            }
+      ]);
+      // websocket
 
-            return { message: newMessage, chat };
-      }
+      return { userMessage: newMessage, chat };
 };
