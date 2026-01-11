@@ -1,13 +1,19 @@
 import express, { Application, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import http from 'http';
 import passport from "passport";
 import { envVars } from "./app/config/env.config";
 import { errorHandler } from "./app/middlewares/errorHandler.middleware";
 import routes from "./app/routes";
 import "./app/config/passport.config";
+import { initializeSocket } from "./app/lib/socket";
 
 const app: Application = express();
+export const server = http.createServer(app);
+
+// socket
+initializeSocket(server);
 
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
