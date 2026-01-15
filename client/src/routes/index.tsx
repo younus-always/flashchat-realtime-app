@@ -1,5 +1,5 @@
 import BaseLayout from "@/layouts/base-layout";
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
 import { authRoutesPaths, protectedRoutesPaths } from "./routes";
 import AppLayout from "@/layouts/app-layout";
 import RouteGuard from "./route-guard";

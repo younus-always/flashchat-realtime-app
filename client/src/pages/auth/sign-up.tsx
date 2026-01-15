@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const { register, isSigningUp } = useAuth();
@@ -40,7 +40,7 @@ const SignUp = () => {
           <CardHeader
             className="flex flex-col items-center justify-center gap-3"
           >
-            <Logo />
+            {/* <Logo /> */}
             <CardTitle className="text-xl">Create your account</CardTitle>
           </CardHeader>
           <CardContent>
@@ -60,8 +60,8 @@ const SignUp = () => {
                           type="text"
                           placeholder="John Doe"
                         />
-                        <FormMessage />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 >
@@ -80,8 +80,8 @@ const SignUp = () => {
                           type="email"
                           placeholder="Johndoe@example.com"
                         />
-                        <FormMessage />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 >
@@ -100,20 +100,20 @@ const SignUp = () => {
                           type="password"
                           placeholder="******"
                         />
-                        <FormMessage />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 >
                 </FormField>
 
                 <Button type="submit" disabled={isSigningUp} className="w-full">
-                  {isSigningUp && <Spinner />} Sign Up
+                  {isSigningUp && <span><Spinner /></span>} Sign Up
                 </Button>
 
                 <div className="text-center text-sm">
                   Already have an account?{" "}
-                  <Link to={"/login"} className="underline">
+                  <Link to={"/"} className="underline">
                     Sign In
                   </Link>
                 </div>

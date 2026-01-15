@@ -1,11 +1,11 @@
-import { Outlet } from "react-router"
+import { Outlet } from "react-router-dom"
 
 interface Props {
       requireAuth?: boolean
 }
 
 const RouteGuard = ({ requireAuth }: Props) => {
-      console.log(requireAuth);
+      console.log("requiredAuth", requireAuth);
       return <Outlet />
 }
 

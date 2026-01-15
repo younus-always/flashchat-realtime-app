@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 // import LogoSvg from "@/assets/logo.svg";
 
 interface LogoProps {
