@@ -35,6 +35,6 @@ export const protectedRoutesPaths = [
       }
 ];
 
-export const isAuthRoutes = (pathname: string) => {
+export const isAuthRoute = (pathname: string) => {
       return Object.values(AUTH_ROUTES).includes(pathname);
 };
