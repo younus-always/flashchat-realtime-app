@@ -1,3 +1,4 @@
+import AsideBar from "@/layouts/aside-bar"
 import type { ReactNode } from "react"
 
 interface Props {
@@ -7,8 +8,8 @@ interface Props {
 const AppWrapper = ({ children }: Props) => {
       return (
             <div className="h-full">
-                  {/* Toolbar */}
-                  <main className="h-full">{children}</main>
+                  <AsideBar />
+                  <main className="h-full lg:pl-10">{children}</main>
             </div>
       )
 }

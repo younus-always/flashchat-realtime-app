@@ -5,6 +5,7 @@ const AppLayout = () => {
       return (
             <AppWrapper>
                   <div className="h-full">
+                        {/* chatlist */}
                         <Outlet />
                   </div>
             </AppWrapper>
