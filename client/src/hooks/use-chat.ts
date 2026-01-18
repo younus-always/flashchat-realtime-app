@@ -10,7 +10,7 @@ interface ChatState {
       users: UserType[];
       singleChat: {
             chat: ChatType;
-            message: MessageType[];
+            messages: MessageType[];
       } | null;
 
       isChatsLoading: boolean;
@@ -99,6 +99,5 @@ export const useChat = create<ChatState>((set, get) => ({
 
             });
       }
-
-
 }));
+
