@@ -1,6 +1,6 @@
 import { Search } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "../ui/input-group";
-import NewChatPopover from "./newchat-popover";
+import { NewChatPopover } from "./newchat-popover";
 
 interface Props {
       onSearch: (val: string) => void;

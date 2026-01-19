@@ -1,12 +1,14 @@
 import { useChat } from "@/hooks/use-chat";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
-import { ArrowLeft, PenBoxIcon, Search, UserIcon, UserSearch } from "lucide-react";
+import { ArrowLeft, PenBoxIcon, Search, UserIcon } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "../ui/input-group";
 import { Spinner } from "../ui/spinner";
+import type { UserType } from "@/types/auth.type";
+import AvatarWithBadge from "../avatar-with-badge";
 
-const NewChatPopover = () => {
+export const NewChatPopover = memo(() => {
       const { users, fetchAllUsers, isUsersLoading, createChat, isCreatingChat } = useChat();
 
       const [isOpen, setIsOpen] = useState(false);
@@ -116,6 +118,48 @@ const NewChatPopover = () => {
                   </PopoverContent>
             </Popover >
       )
-}
+});
+NewChatPopover.displayName = "NewChatPopover";
 
-export default NewChatPopover
+const UserAvatar = memo(({ user }: { user: UserType }) => (
+      <>
+            <AvatarWithBadge name={user.name} src={user.avatar ?? ""} />
+            <div className="min-w-0 flex-1">
+                  <h5 className="text-[13.5px] font-medium truncate">{user.name}</h5>
+                  <p className="text-xs text-muted-foreground">Hey there! I'm using flashChat</p>
+            </div>
+      </>
+));
+UserAvatar.displayName = "UserAvatar";
+
+const NewGroupItem = memo(({ disabled, onClick }: {
+      disabled: boolean;
+      onClick: () => void;
+}) => (
+      <button onClick={onClick} disabled={disabled} className="w-full flex items-center gap-2 p-2 rounded-sm text-left hover:bg-accent transition-colors disabled:opacity-50">
+            <div className="bg-primary/10 p-2 rounded-full">
+                  <UserIcon className="size-4 text-primary" />
+            </div>
+            <span>New Group</span>
+      </button>
+));
+NewGroupItem.displayName = "NewGroupItem";
+
+const ChatUserItem = memo(({ user, isLoading, disabled, onClick }: {
+      user: UserType;
+      disabled: boolean;
+      isLoading: boolean;
+      onClick: (id: string) => void;
+}) => (
+      <button
+            disabled={isLoading || disabled}
+            onClick={() => onClick(user._id)}
+            className="relative w-full flex items-center gap-2 p-2 rounded-sm bg-accent text-left transition-colors disabled:opacity-50"
+      >
+            <UserAvatar user={user} />
+            {isLoading && (
+                  <Spinner className="absolute w-4 h-4 right-2 ml-auto" />
+            )}
+      </button>
+));
+ChatUserItem.displayName = "ChatUserItem";
