@@ -31,7 +31,7 @@ const ChatList = () => {
       return (
             <div className="fixed inset-y-0 *:pb-20 lg:pb-0 lg:max-w-94.75 lg:block border-r border-border bg-sidebar max-w-[calc(100%-40px)] w-full left-10 z-98">
                   <div className="flex flex-col">
-                        <ChatListHeader />
+                        <ChatListHeader onSearch={setSearchQuery} />
 
                         <div className="h-[calc(100vh-100px)] flex-1 overflow-y-auto">
                               <div className="px-2 pb-10 pt-1 space-y-1">
