@@ -8,8 +8,8 @@ interface Props {
 
 const ChatListHeader = ({ onSearch }: Props) => {
       return (
-            <div className="p-3 border-b border-border">
-                  <div className="flex items-center justify-center mb-3">
+            <div className="p-4 border-b border-border">
+                  <div className="flex items-center justify-between mb-3">
                         <h1 className="text-xl font-semibold">Chat</h1>
                         <div>
                               <NewChatPopover />

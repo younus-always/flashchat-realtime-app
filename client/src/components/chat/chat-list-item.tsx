@@ -7,10 +7,10 @@ import AvatarWithBadge from "../avatar-with-badge";
 interface Props {
       chat: ChatType;
       currentUserId: string | null;
-      onclick?: () => void;
+      onClick?: () => void;
 }
 
-const ChatListItem = ({ chat, currentUserId, onclick }: Props) => {
+const ChatListItem = ({ chat, currentUserId, onClick }: Props) => {
       const { pathname } = useLocation();
       const { lastMessage, createdAt } = chat;
       const { name, avatar, isOnline, isGroup } = getOtherUserAndGroup(chat, currentUserId);
@@ -34,7 +34,7 @@ const ChatListItem = ({ chat, currentUserId, onclick }: Props) => {
       };
 
       return (
-            <button onClick={onclick} className={cn(`w-full flex items-center gap-2 p-2 rounded-sm hover:bg-sidebar-accent transition-colors text-left`, pathname.includes(chat._id) && "bg-sidebar-accent!")}>
+            <button onClick={onClick} className={cn(`w-full flex items-center gap-2 p-2 rounded-sm hover:bg-sidebar-accent transition-colors text-left`, pathname.includes(chat._id) && "bg-sidebar-accent!")}>
                   <AvatarWithBadge name={name} src={avatar} isGroup={isGroup} isOnline={isOnline} />
                   <div className="flex min-h-0">
                         <div className="flex items-center justify-center mb-0.5">

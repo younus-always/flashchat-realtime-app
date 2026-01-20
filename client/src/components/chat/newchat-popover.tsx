@@ -7,6 +7,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "../ui/input-group"
 import { Spinner } from "../ui/spinner";
 import type { UserType } from "@/types/auth.type";
 import AvatarWithBadge from "../avatar-with-badge";
+import { Checkbox } from "../ui/checkbox";
 
 export const NewChatPopover = memo(() => {
       const { users, fetchAllUsers, isUsersLoading, createChat, isCreatingChat } = useChat();
@@ -69,10 +70,12 @@ export const NewChatPopover = memo(() => {
             }
       };
 
+      console.log(isOpen);
+
       return (
             <Popover open={isOpen} onOpenChange={handleOpenChange}>
                   <PopoverTrigger asChild>
-                        <Button variant="ghost" onClick={() => setIsOpen(true)} size="icon" className="h-8 w-8">
+                        <Button variant="ghost" onClick={() => setIsOpen(true)} size="icon" className="h-8 w-8 hover:cursor-pointer">
                               <PenBoxIcon className="h-5! w-5! stroke-1!" />
                         </Button>
                   </PopoverTrigger>
@@ -108,13 +111,40 @@ export const NewChatPopover = memo(() => {
                                           <Spinner className="h-6 w-6" />
                                     ) : users && users.length === 0 ? (
                                           <p className="text-center text-muted-foreground">No users found</p>
-                                    ) : isGroupMode ? (
-                                          <></>
+                                    ) : !isGroupMode ? (
+                                          <>
+                                                <NewGroupItem disabled={isCreatingChat} onClick={() => setIsGroupMode(true)} />
+                                                {users?.map(user => (
+                                                      <ChatUserItem key={user._id}
+                                                            user={user}
+                                                            isLoading={loadingUserId === user._id}
+                                                            disabled={loadingUserId !== null}
+                                                            onClick={handleCreateChat} />
+                                                ))}
+                                          </>
                                     ) : (
-                                          <></>
+                                          users?.map(user => (
+                                                <GroupUserItem key={user._id}
+                                                      user={user}
+                                                      isSelected={selectedUsers.includes(user._id)}
+                                                      onToggle={toggleUserSelection} />
+                                          ))
                                     )
                               }
                         </div>
+
+                        {isGroupMode && (
+                              <div className="border-t p-3">
+                                    <Button onClick={handleCreateGroup}
+                                          className="w-full"
+                                          disabled={isCreatingChat ||
+                                                !groupName.trim() ||
+                                                selectedUsers.length === 0}>
+                                          {isCreatingChat && <Spinner className="w-4 h-4" />}
+                                          Create Group
+                                    </Button>
+                              </div>
+                        )}
                   </PopoverContent>
             </Popover >
       )
@@ -163,3 +193,15 @@ const ChatUserItem = memo(({ user, isLoading, disabled, onClick }: {
       </button>
 ));
 ChatUserItem.displayName = "ChatUserItem";
+
+const GroupUserItem = memo(({ user, isSelected, onToggle }: {
+      user: UserType;
+      isSelected: boolean;
+      onToggle: (id: string) => void;
+}) => (
+      <label role="button" className="w-full flex items-center gap-2 p-2 rounded-sm bg-accent text-left transition-colors">
+            <UserAvatar user={user} />
+            <Checkbox checked={isSelected} onCheckedChange={() => onToggle(user._id)} />
+      </label>
+));
+GroupUserItem.displayName = "GroupUserItem";

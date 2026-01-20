@@ -49,7 +49,7 @@ const ChatList = () => {
                                                       key={chat._id}
                                                       chat={chat}
                                                       currentUserId={currentUserId}
-                                                      onclick={() => onRoute(chat._id)}
+                                                      onClick={() => onRoute(chat._id)}
                                                 />
                                           ))
                                     )}
