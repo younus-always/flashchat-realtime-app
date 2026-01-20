@@ -24,6 +24,7 @@ interface ChatState {
       fetchSingleChat: (chatId: string) => void;
 
       addNewChat: (newChat: ChatType) => void;
+      updateChatLastMessage: (chatId: string, lastMessage: MessageType) => void;
 };
 
 export const useChat = create<ChatState>((set, get) => ({
@@ -98,6 +99,20 @@ export const useChat = create<ChatState>((set, get) => ({
                   };
 
             });
-      }
+      },
+
+      updateChatLastMessage: (chatId, lastMessage) => {
+            set((state) => {
+                  const chat = state.chats.find(c => c._id === chatId);
+                  if (!chat) return state;
+
+                  return {
+                        chats: [
+                              { ...chat, lastMessage },
+                              ...state.chats.filter(c => c._id !== chatId)
+                        ]
+                  }
+            })
+      },
 }));
 
