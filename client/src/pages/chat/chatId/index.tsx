@@ -1,10 +1,12 @@
+import ChatBody from "@/components/chat/chat-body";
 import ChatHeader from "@/components/chat/chat-header";
+import EmptyState from "@/components/empty-state";
 import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/hooks/use-auth";
 import { useChat } from "@/hooks/use-chat";
 import useChatId from "@/hooks/use-chat-id"
 import { useSocket } from "@/hooks/use-socket";
-import { MessageType } from "@/types/chat.type";
+import type { MessageType } from "@/types/chat.type";
 import { useEffect, useState } from "react";
 
 const SingleChat = () => {
@@ -16,7 +18,7 @@ const SingleChat = () => {
 
       const currentUserId = user?._id || null;
       const chat = singleChat?.chat;
-      const message = singleChat?.messages || [];
+      const messages = singleChat?.messages || [];
 
       useEffect(() => {
             if (!chatId) return;
@@ -54,6 +56,11 @@ const SingleChat = () => {
             <div className="h-full">
                   <div className="relative h-svh flex flex-col overflow-hidden">
                         <ChatHeader chat={chat} currentUserId={currentUserId} />
+                        {messages.length === 0 ? (
+                              <EmptyState title="Start a conversation" description="No message yet. Send the first message" />
+                        ) : (
+                              <ChatBody chatId={chatId} messages={messages} onReply={setReplyTo} />
+                        )}
                   </div>
             </div>
       )
