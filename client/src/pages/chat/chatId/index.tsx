@@ -1,3 +1,4 @@
+import ChatHeader from "@/components/chat/chat-header";
 import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/hooks/use-auth";
 import { useChat } from "@/hooks/use-chat";
@@ -13,7 +14,7 @@ const SingleChat = () => {
       const { socket } = useSocket();
       const [replyTo, setReplyTo] = useState<MessageType | null>(null);
 
-      const currentUser = user?._id || null;
+      const currentUserId = user?._id || null;
       const chat = singleChat?.chat;
       const message = singleChat?.messages || [];
 
@@ -52,7 +53,7 @@ const SingleChat = () => {
       return (
             <div className="h-full">
                   <div className="relative h-svh flex flex-col overflow-hidden">
-
+                        <ChatHeader chat={chat} currentUserId={currentUserId} />
                   </div>
             </div>
       )
