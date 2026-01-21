@@ -73,15 +73,24 @@ export const useChat = create<ChatState>((set, get) => ({
                   return res.data.chat;
             } catch (error: unknown) {
                   const axiosError = error as AxiosError<{ message: string }>;
-                  toast.error(axiosError.response?.data?.message || "Failed to fetch chats");
+                  toast.error(axiosError.response?.data?.message || "Failed to create chat");
                   return null;
             } finally {
                   set({ isCreatingChat: false })
             }
       },
 
-      fetchSingleChat: async () => {
+      fetchSingleChat: async (chatId: string) => {
             set({ isSingleChatLoading: true });
+            try {
+                  const { data } = await API.get(`/chat/${chatId}`)
+                  set({ singleChat: data })
+            } catch (error: unknown) {
+                  const axiosError = error as AxiosError<{ message: string }>;
+                  toast.error(axiosError.response?.data.message || "Failed to fetch single chat")
+            } finally {
+                  set({ isSingleChatLoading: false })
+            }
       },
 
       addNewChat: (newChat: ChatType) => {
