@@ -5,7 +5,10 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import { Button } from "../ui/button";
-import { X } from "lucide-react";
+import { Paperclip, Send, X } from "lucide-react";
+import { Form, FormField, FormItem } from "../ui/form";
+import { Input } from "../ui/input";
+import ChatReplyBar from "./chat-reply-bar";
 
 interface Props {
       chatId: string | null;
@@ -62,24 +65,75 @@ const ChatFooter = ({ chatId, currentUserId, replyTo, onCancelReply }: Props) =>
 
 
       return (
-            <div className="sticky bottom-0 inset-x-0 bg-card border-t border-border py-4 z-999">
-                  {image && (
-                        <div className="max-w-6xl mx-auto px-8.5">
-                              <div className="relative">
-                                    <img src={image} alt="" className="h-16 min-w-16 object-contain bg-muted" />
-                                    <Button type="button"
-                                          size="icon"
-                                          variant="ghost"
-                                          className="absolute top-1 right-1 bg-black/50 text-white rounded-full">
-                                          <X className="h-3 w-3" />
-                                    </Button>
+            <>
+                  <div className="sticky bottom-0 inset-x-0 bg-card border-t border-border py-4 z-999">
+                        {image && (
+                              <div className="max-w-6xl mx-auto px-8.5">
+                                    <div className="relative">
+                                          <img src={image} alt="" className="h-16 min-w-16 object-contain bg-muted" />
+                                          <Button type="button"
+                                                size="icon"
+                                                variant="ghost"
+                                                className="absolute top-1 right-1 bg-black/50 text-white rounded-full">
+                                                <X className="h-3 w-3" />
+                                          </Button>
+                                    </div>
                               </div>
-                        </div>
+                        )}
+
+                        {/* form */}
+                        <Form {...form}>
+                              <form onSubmit={form.handleSubmit(onSubmit)}
+                                    className="max-w-6xl mx-auto px-8.5 flex items-end gap-2">
+                                    <div className="flex items-center gap-1.5">
+                                          <Button
+                                                type="button"
+                                                variant="outline"
+                                                size="icon"
+                                                className="rounded-full"
+                                                onClick={() => imageInputRef.current?.click()}>
+                                                <Paperclip className="h-4 w-4" />
+                                          </Button>
+                                          <input
+                                                type="file"
+                                                accept="*/image"
+                                                ref={imageInputRef}
+                                                onChange={handleImageChange}
+                                                className="hidden"
+                                          />
+                                    </div>
+                                    <FormField
+                                          control={form.control}
+                                          name="message"
+                                          render={({ field }) => (
+                                                <FormItem className="flex-1">
+                                                      <Input
+                                                            {...field}
+                                                            autoComplete="off"
+                                                            placeholder="Type new message"
+                                                            className="bg-background min-h-10"
+                                                      />
+                                                </FormItem>
+                                          )} />
+
+                                    <Button
+                                          type="submit"
+                                          size="icon"
+                                          className="rounded-lg">
+                                          <Send className="h-3.5 w-3.5" />
+                                    </Button>
+                              </form>
+                        </Form>
+                  </div>
+
+                  {replyTo && (
+                        <ChatReplyBar
+                              replyTo={replyTo}
+                              currentUserId={currentUserId}
+                              onCancel={onCancelReply}
+                        />
                   )}
-
-                  {/* form */}
-
-            </div>
+            </>
       )
 }
 
