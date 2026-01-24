@@ -65,6 +65,7 @@ export const initializeSocket = (httpServer: HTTPServer) => {
                         try {
                               await validateChatParticipant(chatId, userId);
                               socket.join(`chat:${chatId}`);
+                              console.log(`User ${userId} join room chat:${chatId}`);
                               callback?.();
                         } catch (error) {
                               callback?.("Error joining chat");
@@ -108,7 +109,11 @@ export const emitNewMessageToChatRoom = (
       message: any
 ) => {
       const io = getIO();
-      const senderSocketId = onlineUsers.get(senderId);
+      const senderSocketId = onlineUsers.get(senderId?.toString());
+
+      console.log("senderId:", senderId);
+      console.log("sender socketId exists:", senderSocketId);
+      console.log("All online users:", Object.fromEntries(onlineUsers));
 
       if (senderSocketId) {
             io.to(`chat:${chatId}`).except(senderSocketId).emit("message:now", message)

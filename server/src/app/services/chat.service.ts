@@ -46,9 +46,9 @@ export const createChatService = async (userId: string, payload: {
       // implement websocket
       const populateChats = await chat?.populate("participants", "name avatar");
       const participantIdStrings = populateChats?.participants?.map(p => p._id.toString());
-      
+
       emitNewChatToParticipants(participantIdStrings, populateChats);
-      
+
       return chat;
 };
 
@@ -73,7 +73,7 @@ export const getSingleChatService = async (chatId: string, userId: string) => {
             participants: {
                   $in: [userId]
             }
-      });
+      }).populate("participants", "name avatar");
 
       if (!chat) throw new BadRequestException("Chat not found or you are not authorized to view this chat.");
 

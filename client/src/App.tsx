@@ -10,16 +10,14 @@ import { useSocket } from "./hooks/use-socket";
 const App = () => {
   const { user, isAuthStatus, isAuthStatusLoading } = useAuth();
   const { pathname } = useLocation();
-  const { onlineUsers } = useSocket();
   const isAuth = isAuthRoute(pathname);
 
-  console.log("onlineUsers", onlineUsers);
-
   useEffect(() => {
+    if (isAuth) return;
     isAuthStatus()
-  }, [isAuthStatus])
+  }, [isAuth, isAuthStatus])
 
-  if (isAuthStatusLoading && !user && !isAuth) {
+  if (isAuthStatusLoading && !user) {
     return (
       <div className="h-screen flex flex-col items-center justify-center">
         {/* <Logo imgClass="size-20" showText={false} /> */}
