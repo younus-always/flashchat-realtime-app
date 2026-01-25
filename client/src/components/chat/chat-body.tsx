@@ -36,7 +36,7 @@ const ChatBody = ({ chatId, messages, onReply }: Props) => {
       return (
             <div className="flex-1 overflow-hidden">
                   <div className="max-h-screen h-auto overflow-y-auto">
-                        <div className="w-full h-full max-w-6xl mx-auto flex flex-col px-3 pt-36">
+                        <div className="w-full h-full max-w-6xl mx-auto flex flex-col px-3">
                               {messages?.map((message) => (
                                     <ChatBodyMessage
                                           key={message._id}
@@ -44,6 +44,8 @@ const ChatBody = ({ chatId, messages, onReply }: Props) => {
                                           onReply={onReply} />
                               ))}
                         </div>
+                        <br />
+                        <br />
                         <div ref={bottomRef} />
                   </div>
             </div>

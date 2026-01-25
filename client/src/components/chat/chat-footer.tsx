@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/refs */
 import type { MessageType } from "@/types/chat.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useRef, useState } from "react";
@@ -9,6 +10,7 @@ import { Paperclip, Send, X } from "lucide-react";
 import { Form, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
 import ChatReplyBar from "./chat-reply-bar";
+import { useChat } from "@/hooks/use-chat";
 
 interface Props {
       chatId: string | null;
@@ -22,6 +24,7 @@ const messageSchema = z.object({
 });
 
 const ChatFooter = ({ chatId, currentUserId, replyTo, onCancelReply }: Props) => {
+      const { sendMessage } = useChat();
       const [image, setImage] = useState<string | null>(null);
       const imageInputRef = useRef<HTMLInputElement | null>(null);
       const form = useForm({
@@ -57,6 +60,12 @@ const ChatFooter = ({ chatId, currentUserId, replyTo, onCancelReply }: Props) =>
             };
 
             // Send Message
+            sendMessage({
+                  chatId,
+                  content: values.message,
+                  image: image || undefined,
+                  replyTo
+            });
 
             onCancelReply();
             handleRemoveImage();
@@ -69,12 +78,13 @@ const ChatFooter = ({ chatId, currentUserId, replyTo, onCancelReply }: Props) =>
                   <div className="sticky bottom-0 inset-x-0 bg-card border-t border-border py-4 z-999">
                         {image && (
                               <div className="max-w-6xl mx-auto px-8.5">
-                                    <div className="relative">
+                                    <div className="relative w-fit">
                                           <img src={image} alt="" className="h-16 min-w-16 object-contain bg-muted" />
                                           <Button type="button"
                                                 size="icon"
                                                 variant="ghost"
-                                                className="absolute top-1 right-1 bg-black/50 text-white rounded-full">
+                                                onClick={handleRemoveImage}
+                                                className="absolute top-1 right-1 bg-black/50 text-white rounded-full cursor-pointer">
                                                 <X className="h-3 w-3" />
                                           </Button>
                                     </div>
