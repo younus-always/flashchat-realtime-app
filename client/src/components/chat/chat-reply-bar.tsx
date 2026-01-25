@@ -1,4 +1,5 @@
 import type { MessageType } from "@/types/chat.type"
+import { Button } from "../ui/button";
 
 interface Props {
       replyTo: MessageType | null;
@@ -7,8 +8,29 @@ interface Props {
 }
 
 const ChatReplyBar = ({ replyTo, currentUserId, onCancel }: Props) => {
+      if (!replyTo) return null;
+
+      const senderName = replyTo.sender?._id === currentUserId ? "You" : replyTo.sender?.name;
+
       return (
-            <div>ChatReplyBar</div>
+            <div className="absolute bottom-16 right-0 left-0 px-6 pb-4 bg-card border-t animate-in slide-in-from-bottom">
+                  <div className="flex flex-1 justify-between text-sm mt-2 p-3 border-l-4 border-l-primary bg-primary/10 shadow-sm rounded-md">
+                        <div className="flex-1">
+                              <h5 className="font-medium">{senderName}</h5>
+                              {replyTo?.image ? (
+                                    <p className="text-muted-foreground">Photo</p>
+                              ) : (
+                                    <p className="truncate text-ellipsis">{replyTo.content}</p>
+                              )}
+                        </div>
+                        <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={onCancel}
+                              className="shrink-0 size-6"
+                        ></Button>
+                  </div>
+            </div>
       )
 }
 

@@ -1,6 +1,7 @@
 import { useSocket } from "@/hooks/use-socket";
 import type { ChatType } from "@/types/chat.type";
 import { format, isToday, isYesterday, isThisWeek } from "date-fns";
+import { uuidv4 } from "zod";
 
 
 export const isUserOnline = (userId?: string) => {
@@ -43,4 +44,8 @@ export const formateChatTime = (date: string | Date) => {
       if (isThisWeek(newDate)) return format(newDate, "EEEE");
 
       return format(newDate, "M/d");
+};
+
+export function generateUUID() {
+      return uuidv4();
 };
