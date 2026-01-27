@@ -3,9 +3,10 @@ import { compareValue, hashValue } from "../utils/bcrypt";
 
 export interface UserDocument extends Document {
       name: string;
-      email: string;
-      password: string;
-      avatar: string | null;
+      email?: string;
+      password?: string;
+      avatar?: string | null;
+      isAI: boolean;
       createdAt: Date;
       updatedAt: Date;
 
@@ -17,12 +18,20 @@ const userSchema = new Schema<UserDocument>({
       email: {
             type: String,
             unique: true,
-            required: true,
             lowercase: true,
-            trim: true
+            trim: true,
+            required: function (this: UserDocument) {
+                  return !this.isAI;
+            },
       },
-      password: { type: String, required: true },
-      avatar: { type: String, default: null }
+      password: {
+            type: String,
+            required: function (this: UserDocument) {
+                  return !this.isAI;
+            },
+      },
+      avatar: { type: String, default: null },
+      isAI: { type: Boolean, default: false }
 }, {
       versionKey: false,
       timestamps: true,
