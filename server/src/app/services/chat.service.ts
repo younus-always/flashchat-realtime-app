@@ -32,7 +32,7 @@ export const createChatService = async (userId: string, payload: {
                         $all: allParticipantIds,
                         $size: 2
                   }
-            }).populate("participants", "name avatar");
+            }).populate("participants", "name avatar isAI");
 
             if (existingChat) return existingChat;
 
@@ -43,8 +43,8 @@ export const createChatService = async (userId: string, payload: {
             })
       };
 
-      // implement websocket
-      const populateChats = await chat?.populate("participants", "name avatar");
+      // Implement websocket
+      const populateChats = await chat?.populate("participants", "name avatar isAI");
       const participantIdStrings = populateChats?.participants?.map(p => p._id.toString());
 
       emitNewChatToParticipants(participantIdStrings, populateChats);
@@ -55,7 +55,7 @@ export const createChatService = async (userId: string, payload: {
 export const getUserChatsService = async (userId: string) => {
       const chats = await ChatModel.find({
             participants: { $in: [userId] }
-      }).populate("participants", "name avatar")
+      }).populate("participants", "name avatar isAI")
             .populate({
                   path: "lastMessage",
                   populate: {
@@ -73,18 +73,18 @@ export const getSingleChatService = async (chatId: string, userId: string) => {
             participants: {
                   $in: [userId]
             }
-      }).populate("participants", "name avatar");
+      }).populate("participants", "name avatar isAI");
 
       if (!chat) throw new BadRequestException("Chat not found or you are not authorized to view this chat.");
 
       const messages = await MessageModel.find({ chatId })
-            .populate("sender", "name avatar")
+            .populate("sender", "name avatar isAI")
             .populate({
                   path: "replyTo",
                   select: "content image sender",
                   populate: {
                         path: "sender",
-                        select: "name avatar"
+                        select: "name avatar isAI"
                   }
             }).sort({ createdAt: 1 })
 
