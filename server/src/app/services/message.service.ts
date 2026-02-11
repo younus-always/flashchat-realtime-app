@@ -84,10 +84,8 @@ export const sendMessageService = async (userId: string, payload: {
             userMessage: newMessage,
             chat,
             aiResponse,
-            isAIChat: chat.isAIChat
       };
 };
-
 
 const getAIResponse = async (chatId: string, userId: string) => {
       const flashChatAI = await UserModel.findOne({ isAI: true });
