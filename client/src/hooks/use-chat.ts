@@ -158,21 +158,31 @@ export const useChat = create<ChatState>((set, get) => ({
                   });
                   const { userMessage, aiResponse } = data;
 
-                  set((state) => {
-                        if (!state.singleChat) return state;
-                        return {
-                              singleChat: {
-                                    ...state.singleChat,
-                                    messages: state.singleChat.messages.map((msg) => msg._id === tempUserId ? userMessage : msg
-                                    )
-                              },
-                        };
-                  });
+                  // replace the temp user message
+                  get().addOrUpdateMessage(chatId, userMessage, tempUserId);
+
+                  if (isAIChat && aiSender) {
+                        // replace the temp a message
+                        get().addOrUpdateMessage(chatId, aiResponse, tempAIId);
+                  }
+
+                  // set((state) => {
+                  //       if (!state.singleChat) return state;
+                  //       return {
+                  //             singleChat: {
+                  //                   ...state.singleChat,
+                  //                   messages: state.singleChat.messages.map((msg) => msg._id === tempUserId ? userMessage : msg
+                  //                   )
+                  //             },
+                  //       };
+                  // });
             } catch (error: unknown) {
                   const axiosError = error as AxiosError<{ message: string }>;
                   toast.error(axiosError.response?.data.message || "Failed to send message")
             }
-
+            finally {
+                  set({ isSendingMsg: false })
+            }
       },
 
       addNewChat: (newChat: ChatType) => {

@@ -16,6 +16,7 @@ interface Props {
       chatId: string | null;
       currentUserId: string | null;
       replyTo: MessageType | null;
+      isAIChat: boolean;
       onCancelReply: () => void;
 };
 
@@ -23,8 +24,8 @@ const messageSchema = z.object({
       message: z.string().optional()
 });
 
-const ChatFooter = ({ chatId, currentUserId, replyTo, onCancelReply }: Props) => {
-      const { sendMessage } = useChat();
+const ChatFooter = ({ chatId, currentUserId, replyTo, isAIChat, onCancelReply }: Props) => {
+      const { sendMessage, isSendingMsg } = useChat();
       const [image, setImage] = useState<string | null>(null);
       const imageInputRef = useRef<HTMLInputElement | null>(null);
       const form = useForm({
@@ -54,18 +55,22 @@ const ChatFooter = ({ chatId, currentUserId, replyTo, onCancelReply }: Props) =>
       };
 
       const onSubmit = (values: { message?: string }) => {
+            if (isSendingMsg) return;
+
             if (!image && !values.message?.trim()) {
                   toast.error("Please enter a message and select an image");
                   return;
             };
 
-            // Send Message
-            sendMessage({
+            const payload = {
                   chatId,
                   content: values.message,
                   image: image || undefined,
                   replyTo
-            });
+            };
+
+            // Send Message
+            sendMessage(payload, isAIChat);
 
             onCancelReply();
             handleRemoveImage();
@@ -76,7 +81,7 @@ const ChatFooter = ({ chatId, currentUserId, replyTo, onCancelReply }: Props) =>
       return (
             <>
                   <div className="sticky bottom-0 inset-x-0 bg-card border-t border-border py-4 z-999">
-                        {image && (
+                        {(image && !isSendingMsg) && (
                               <div className="max-w-6xl mx-auto px-8.5">
                                     <div className="relative w-fit">
                                           <img src={image} alt="" className="h-16 min-w-16 object-contain bg-muted" />
@@ -101,6 +106,7 @@ const ChatFooter = ({ chatId, currentUserId, replyTo, onCancelReply }: Props) =>
                                                 variant="outline"
                                                 size="icon"
                                                 className="rounded-full"
+                                                disabled={isSendingMsg}
                                                 onClick={() => imageInputRef.current?.click()}>
                                                 <Paperclip className="h-4 w-4" />
                                           </Button>
@@ -108,6 +114,7 @@ const ChatFooter = ({ chatId, currentUserId, replyTo, onCancelReply }: Props) =>
                                                 type="file"
                                                 accept="*/image"
                                                 ref={imageInputRef}
+                                                disabled={isSendingMsg}
                                                 onChange={handleImageChange}
                                                 className="hidden"
                                           />
@@ -129,6 +136,7 @@ const ChatFooter = ({ chatId, currentUserId, replyTo, onCancelReply }: Props) =>
                                     <Button
                                           type="submit"
                                           size="icon"
+                                          disabled={isSendingMsg}
                                           className="rounded-lg">
                                           <Send className="h-3.5 w-3.5" />
                                     </Button>
@@ -136,7 +144,7 @@ const ChatFooter = ({ chatId, currentUserId, replyTo, onCancelReply }: Props) =>
                         </Form>
                   </div>
 
-                  {replyTo && (
+                  {(replyTo && !isSendingMsg) && (
                         <ChatReplyBar
                               replyTo={replyTo}
                               currentUserId={currentUserId}
