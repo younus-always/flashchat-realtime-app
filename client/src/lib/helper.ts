@@ -24,13 +24,19 @@ export const getOtherUserAndGroup = (chat: ChatType, currentUserId: string | nul
 
       const other = chat.participants.find(p => p._id !== currentUserId);
       const isOnline = isUserOnline(other?._id ?? "");
+      const subheading = other?.isAI
+            ? "Assistant"
+            : isOnline
+                  ? "Online"
+                  : "Offline";
 
       return {
             name: other?.name || "Unknown",
-            subheading: isOnline ? isOnline : "Offline",
+            subheading,
             avatar: other?.avatar || "",
             isGroup: false,
-            isOnline
+            isOnline,
+            isAI: other?.isAI || false,
       }
 };
 

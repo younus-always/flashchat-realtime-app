@@ -1,11 +1,13 @@
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
+import { RiCircleFill } from '@remixicon/react';
 import type { MessageType } from "@/types/chat.type"
 import AvatarWithBadge from "../avatar-with-badge";
 import { formateChatTime } from "@/lib/helper";
 import { Button } from "../ui/button";
 import { ReplyIcon } from "lucide-react";
 import { memo } from "react";
+import { Response } from "../ui/ai-response";
 
 interface Props {
       message: MessageType;
@@ -87,7 +89,14 @@ export const ChatBodyMessage = memo(({ message, onReply }: Props) => {
                                           <img src={message?.image || ''} alt="" className="max-w-xs rounded-lg" />
                                     )}
 
-                                    {message?.content && <p>{message?.content}</p>}
+                                    {message?.content && <Response>{message?.content}</Response>}
+
+
+                                    {message.streaming && (
+                                          <span>
+                                                <RiCircleFill className="w-4 h-4 animate-bounce rounded-full dark:text-white mt-1" />
+                                          </span>
+                                    )}
                               </div>
 
                               {/* Reply Icon Button */}
