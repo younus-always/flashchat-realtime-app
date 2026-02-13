@@ -161,7 +161,7 @@ export const useChat = create<ChatState>((set, get) => ({
                   // replace the temp user message
                   get().addOrUpdateMessage(chatId, userMessage, tempUserId);
 
-                  if (isAIChat && aiSender) {
+                  if (isAIChat && aiResponse) {
                         // replace the temp a message
                         get().addOrUpdateMessage(chatId, aiResponse, tempAIId);
                   }

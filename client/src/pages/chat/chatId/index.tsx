@@ -55,23 +55,26 @@ const SingleChat = () => {
       };
 
       return (
-            <div className="h-full">
-                  <div className="relative h-svh flex flex-col overflow-hidden">
-                        <ChatHeader chat={chat} currentUserId={currentUserId} />
+            <div className="relative h-svh flex flex-col">
+                  <ChatHeader chat={chat} currentUserId={currentUserId} />
+
+                  <div className="flex-1 bg-background overflow-y-auto">
                         {messages.length === 0 ? (
-                              <EmptyState title="Start a conversation" description="No message yet. Send the first message" />
+                              <EmptyState
+                                    title="Start a conversation"
+                                    description="No message yet. Send the first message" />
                         ) : (
                               <ChatBody chatId={chatId} messages={messages} onReply={setReplyTo} />
                         )}
-
-                        <ChatFooter
-                              replyTo={replyTo}
-                              chatId={chatId}
-                              isAIChat={isAIChat}
-                              currentUserId={currentUserId}
-                              onCancelReply={() => setReplyTo(null)}
-                        />
                   </div>
+
+                  <ChatFooter
+                        replyTo={replyTo}
+                        chatId={chatId}
+                        isAIChat={isAIChat}
+                        currentUserId={currentUserId}
+                        onCancelReply={() => setReplyTo(null)}
+                  />
             </div>
       )
 }

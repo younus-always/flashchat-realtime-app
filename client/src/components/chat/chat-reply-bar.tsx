@@ -20,7 +20,7 @@ const ChatReplyBar = ({ replyTo, currentUserId, onCancel }: Props) => {
                               {replyTo?.image ? (
                                     <p className="text-muted-foreground">Photo</p>
                               ) : (
-                                    <p className="truncate text-ellipsis">{replyTo.content}</p>
+                                    <p className="max-w-4xl truncate text-ellipsis">{replyTo.content}</p>
                               )}
                         </div>
                         <Button

@@ -3,18 +3,17 @@ import { connectDatabase } from "../config/database.config";
 import { UserModel } from "../models/user.model";
 
 export const CreateFlashChatAI = async () => {
-      let FlashChatAI = await UserModel.findOne({ isAI: true });
-      if (FlashChatAI) {
-            console.log("✅ FlashChat AI already exists");
-            return FlashChatAI;
+      const existingAI = await UserModel.findOne({ isAI: true });
+      if (existingAI) {
+            await UserModel.deleteOne({ _id: existingAI._id });
       };
-      FlashChatAI = await UserModel.create({
+      const flashChatAI = await UserModel.create({
             name: "FlashChat AI",
             isAI: true,
             avatar: "https://res.cloudinary.com/dp9vvlndo/image/upload/v1234324523/ai-logo.png" // AI avatar url
       });
-      console.log("✅ FlashChat AI created:", FlashChatAI._id);
-      return FlashChatAI;
+      console.log("✅ FlashChat AI created:", flashChatAI._id);
+      return flashChatAI;
 };
 
 const seedFlashChatAI = async () => {

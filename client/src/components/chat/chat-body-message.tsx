@@ -77,10 +77,9 @@ export const ChatBodyMessage = memo(({ message, onReply }: Props) => {
                                     {message.replyTo && (
                                           <div className={replyBoxClass}>
                                                 <h5 className="font-medium">{replySenderName}</h5>
-                                                <p className="font-normal text-muted-foreground">{
-                                                      message?.replyTo?.content || message?.replyTo?.image
-                                                            ? "Photo"
-                                                            : ""
+                                                <p className="max-w-62.5 font-normal text-muted-foreground truncate">{
+                                                      message?.replyTo?.content ||
+                                                      (message?.replyTo?.image ? "h📸 Photo" : "")
                                                 }</p>
                                           </div>
                                     )}
