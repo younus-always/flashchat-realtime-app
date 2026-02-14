@@ -36,16 +36,6 @@ The monorepo setup ensures clean separation between frontend and backend while k
 
 ---
 
-## 🏗 Architecture
-
-flashchat-realtime-app/
-│
-├── client/ # React frontend (Vite + Tailwind)
-│
-├── server/ # Express backend (TypeScript + MongoDB + Socket.IO)
-│
-└── .git
-
 ### Client
 
 - React 18
@@ -307,3 +297,4 @@ Project Author – MD. Younus Islam
 ### 📄 License
 
 This project is licensed under the ISC License.
+
